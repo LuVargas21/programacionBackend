@@ -1,7 +1,9 @@
 class Product {
 	// title, description, price, thumbnail, code, stock son atributos del producto
 
-	constructor() {}
+	constructor() {
+		this.path
+	}
 }
 class ProductManager {
 	constructor() {
