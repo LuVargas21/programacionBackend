@@ -4,8 +4,9 @@ class Product {
 	constructor() {}
 }
 class ProductManager {
-	constructor() {
+	constructor(path) {
 		this.products = [];
+		this.path = path;
 	}
 
 	validarCamposNulo(title, description, price, thumbnail, code, stock) {
@@ -58,9 +59,6 @@ class ProductManager {
 		product.code = code;
 		product.stock = stock;
 
-		/// 
-		product.path = path;
-
 		if (this.products.length != 0) {
 			const lastProduct = this.products[this.products.length - 1];
 			product.id = lastProduct.id + 1;
@@ -108,9 +106,8 @@ productManager.addproducts(
 	"abcl123",
 	"253"
 );
+
 const products = productManager.getProducts();
 const product = productManager.getProductById(1);
 
 console.log(products);
-
-
