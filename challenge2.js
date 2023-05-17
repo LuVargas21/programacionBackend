@@ -1,62 +1,51 @@
-class Product {
-	// title, description, price, thumbnail, code, stock son atributos del producto
+const { error } = require("console");
+const fs = require("fs");
 
+class Product {
 	constructor() {}
 }
+
 class ProductManager {
-	constructor() {
+	constructor(path) {
+		this.path = path;
 		this.products = [];
 	}
 
-	validarCamposProducto(title, description, price, thumbnail, code, stock) {
-		validarCamposNulo(title, description, price, thumbnail, code, stock);
-		validarCamposVacios(title, description, price, thumbnail, code, stock);
+	loadProducts() {
+		try {
+			const jsonProducts = fs.readFileSync(this.path, "utf8");
+			this.products = JSON.parse(jsonProducts);
+		} catch (error) {
+			throw new Error("Error al cargar los productos");
+		}
 	}
 
 	validarCamposNulo(title, description, price, thumbnail, code, stock) {
-		if (!title || !description || !price || !thumbnail || !code || !stock)
+		if (!title || !description || !price || !thumbnail || !code || !stock) {
 			throw new Error("Debe completar todos los campos para continuar");
+		}
 	}
 
 	validarCamposVacios(title, description, price, thumbnail, code, stock) {
-		let tieneError =
-			this.validarStringVacio(title) &&
-			this.validarStringVacio(description) &&
-			this.validarStringVacio(thumbnail);
-		if (!tieneError) {
-			throw new Error("Debe completar todos los campos para continuar");
-		}
-	}
-
-	validarStringVacio(string) {
-		// buscar metodo de js para validar vacios y tipos
-
-		if (string === "" && string === " ") {
-			return false;
-		}
-		return true;
-	}
-
-	validarString(string) {
 		if (
-			typeof title !== string &&
-			typeof description !== string &&
-			typeof description !== string &&
-			typeof thumbnail !== string
+			title.trim() === "" ||
+			description.trim() === "" ||
+			thumbnail.trim() === "" ||
+			price.trim() === "" ||
+			code.trim() === "" ||
+			stock.trim() === ""
 		) {
-			return false;
+			throw new Error("Debe completar todos los campos");
 		}
-		return true;
 	}
 
-	validarNumero(number) {
-		if (typeof number !== number) {
-			return false;
-		}
-		return true;
+	validarCamposProducto(title, description, price, thumbnail, code, stock) {
+		this.validarCamposNulo(title, description, price, thumbnail, code, stock);
+		this.validarCamposVacios(title, description, price, thumbnail, code, stock);
 	}
 
-	addproducts(title, description, price, thumbnail, code, stock) {
+	addProducts(title, description, price, thumbnail, code, stock) {
+		this.validarCamposVacios(title, description, price, thumbnail, code, stock);
 		this.validarCamposProducto(
 			title,
 			description,
@@ -89,7 +78,20 @@ class ProductManager {
 		}
 
 		this.products.push(product);
+		this.saveProducts();
 	}
+
+	saveProducts() {
+		const jsonProducts = JSON.stringify(this.products, null, "\t");
+		fs.writeFile(this.path, jsonProducts, "utf-8", (error) => {
+			if (error) {
+				throw new Error("Error al guardar");
+			} else {
+				return "Se guardo de forma exitosa";
+			}
+		});
+	}
+
 	getProducts() {
 		return this.products;
 	}
@@ -99,20 +101,50 @@ class ProductManager {
 		if (product != null) {
 			return product;
 		} else {
-			return new Error("el producto no existe");
+			throw new Error("el producto no existe");
+		}
+	}
+
+	updateProduct(productId, updateField) {
+		const productUpdate = this.products.find(
+			(product) => product.id === productId
+		);
+
+		if (productUpdate) {
+			const updateProduct = { ...productUpdate, ...updateField };
+			const indexProduct = this.products.indexOf(productUpdate);
+			this.products[indexProduct] = updateProduct;
+			this.saveProducts();
+			console.log("Producto actualizado");
+		} else {
+			throw new Error("Error al actualizar, verificar!");
+		}
+	}
+
+	deleteProduct(productId) {
+		const productDelete = this.products.findIndex(
+			(product) => product.id === productId
+		);
+		if (productDelete !== -1) {
+			this.products.splice(productId, 1);
+			this.saveProducts();
+			return `producto ${productId} eliminado`;
+		} else {
+			return `producto ${productId} no encontrado`;
 		}
 	}
 }
-const productManager = new ProductManager();
-productManager.addproducts(
-	"producto 1",
+
+const productManager = new ProductManager("./products.json");
+productManager.addProducts(
+	"producto1",
 	"producto prueba",
 	"200",
 	"sin imagen",
-	"abc123",
+	"abcc123",
 	"25"
 );
-productManager.addproducts(
+productManager.addProducts(
 	"producto prueba2",
 	"producto prueba2",
 	"2002",
@@ -120,15 +152,25 @@ productManager.addproducts(
 	"abc1232",
 	"252"
 );
-productManager.addproducts(
+productManager.addProducts(
 	"producto prueba3",
 	"producto prueba3",
 	"2003",
 	"sin imagen",
-	"abc123",
+	"abcl123",
 	"253"
 );
-const products = productManager.getProducts();
-const product = productManager.getProductById(1);
+productManager.addProducts(
+	"producto prueba4",
+	"producto prueba4",
+	"2003",
+	"sin imagen",
+	"abcldsd123",
+	"254"
+);
 
+const products = productManager.getProducts();
+
+productManager.updateProduct(1, { code: 89 });
+productManager.deleteProduct(6);
 console.log(products);
