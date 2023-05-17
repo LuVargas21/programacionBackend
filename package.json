@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "type": "module",
+  "name": "programacionbackend",
+  "description": "",
+  "version": "1.0.0",
+  "main": "challenge2.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuVargas21/programacionBackend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LuVargas21/programacionBackend/issues"
+  },
+  "homepage": "https://github.com/LuVargas21/programacionBackend#readme"
+}

@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 class Product {
 	// title, description, price, thumbnail, code, stock, path son atributos del producto
 
