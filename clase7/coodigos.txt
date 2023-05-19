@@ -1,0 +1,45 @@
+100 informativo
+200 okey
+400 error del lado del cliente 
+500 errores en el servidor 
+
+
+**api rest** 
+XML o JSON 
+El JSON es mas amigable la sintaxis porque tiene el formato de objeto. 
+
+
+Metodos de peticion 
+un metodo es una definicion que forma parte del protocolo http, sirve para canalizar el tipo de peticion que se realiza. 
+
+-GET obtener un recurso
+-POST crear o añadir un recurso 
+-PUT modificar un recurso 
+-DELETE eliminar recurso  
+
+
+Una aplicacion restful requiere un enfoque de diseño distinto a la forma tipica de pensar en un sistema: lo contrario a RPC
+
+RPC remote procedure calls, llamadas de procedimientos remotos, basa su funcionamiento en las operaciones que puede realizar el sistema  (verbos)
+
+COMO DECLARAR CORECTAMENTE ENDPOINTS. 
+
+
+** SI**
+GET api/perritos 
+GET api/perritos/:pid 
+
+POST api/perritos 
+
+**NO**   estamos siendo redundantes en la declaracion del endpoint. 
+PUT api/perritos/actualizar/:pid
+DELETE api/perritos/eliminar 
+
+
+POSTMAN 
+es un software que permite gestionar peticiiones simulando ser un cliente. 
+
+
+METODO POST 
+Sirve para crear recursos, se utiliza para añadir... 
+ejemplo loguear usuarios, etc 
