@@ -4,7 +4,7 @@
 		"description": "producto prueba",
 		"price": "200",
 		"thumbnail": "sin imagen",
-		"code": 89,
+		"code": "abcc123",
 		"stock": "25",
 		"id": 1
 	},
@@ -34,7 +34,5 @@
 		"code": "abcldsd123",
 		"stock": "254",
 		"id": 4
-	}
-] 4
 	}
 ]

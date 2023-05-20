@@ -9,9 +9,10 @@ class ProductManager {
 	constructor(path) {
 		this.path = path;
 		this.products = [];
+		this.#loadProducts();
 	}
 
-	loadProducts() {
+	#loadProducts() {
 		try {
 			const jsonProducts = fs.readFileSync(this.path, "utf8");
 			this.products = JSON.parse(jsonProducts);
@@ -71,8 +72,9 @@ class ProductManager {
 		product.stock = stock;
 
 		if (this.products.length != 0) {
-			const lastProduct = this.products[this.products.length - 1];
-			product.id = lastProduct.id + 1;
+			const ids = this.products.map((x) => x.id);
+			const maxId = Math.max(...ids);
+			product.id = maxId + 1;
 		} else {
 			product.id = 1;
 		}
@@ -83,13 +85,12 @@ class ProductManager {
 
 	saveProducts() {
 		const jsonProducts = JSON.stringify(this.products, null, "\t");
-		fs.writeFile(this.path, jsonProducts, "utf-8", (error) => {
-			if (error) {
-				throw new Error("Error al guardar");
-			} else {
-				return "Se guardo de forma exitosa";
-			}
-		});
+		try {
+			fs.writeFileSync(this.path, jsonProducts, "utf-8");
+			return "Se guardo de forma exitosa";
+		} catch (error) {
+			throw new Error("Error al guardar");
+		}
 	}
 
 	getProducts() {
@@ -136,41 +137,42 @@ class ProductManager {
 }
 
 const productManager = new ProductManager("./products.json");
-productManager.addProducts(
-	"producto1",
-	"producto prueba",
-	"200",
-	"sin imagen",
-	"abcc123",
-	"25"
-);
-productManager.addProducts(
-	"producto prueba2",
-	"producto prueba2",
-	"2002",
-	"sin imagen2",
-	"abc1232",
-	"252"
-);
-productManager.addProducts(
-	"producto prueba3",
-	"producto prueba3",
-	"2003",
-	"sin imagen",
-	"abcl123",
-	"253"
-);
-productManager.addProducts(
-	"producto prueba4",
-	"producto prueba4",
-	"2003",
-	"sin imagen",
-	"abcldsd123",
-	"254"
-);
 
-const products = productManager.getProducts();
+// productManager.addProducts(
+// 	"producto1",
+// 	"producto prueba",
+// 	"200",
+// 	"sin imagen",
+// 	"abcc123",
+// 	"25"
+// );
+// productManager.addProducts(
+// 	"producto prueba2",
+// 	"producto prueba2",
+// 	"2002",
+// 	"sin imagen2",
+// 	"abc1232",
+// 	"252"
+// );
+// productManager.addProducts(
+// 	"producto prueba3",
+// 	"producto prueba3",
+// 	"2003",
+// 	"sin imagen",
+// 	"abcl123",
+// 	"253"
+// );
+// productManager.addProducts(
+// 	"producto prueba4",
+// 	"producto prueba4",
+// 	"2003",
+// 	"sin imagen",
+// 	"abcldsd123",
+// 	"254"
+// );
 
-productManager.updateProduct(1, { code: 89 });
-productManager.deleteProduct(6);
-console.log(products);
+// const products = productManager.getProducts();
+
+// productManager.updateProduct(1, { code: 89 });
+// productManager.deleteProduct(6);
+// console.log(products);
