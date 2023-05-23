@@ -1,0 +1,7 @@
+NODULOS NATIVOS DE NODEJS. 
+
+fs => modulo utilizado para el manejo de archivos.  --> sirve para manejo de persistencia 
+crypto => permite hacer operaciones de encriptacion y cifrado de informacion sensible.  --> sirve para mejorar la seguridad de los datos. 
+http => permite crear un servidor basico bajo el protocolo http --> sirve para crear nuestro primer servidor de solicitud/respuesta 
+path => permite el correcto manejo de rutas --> sirve para evitar anmbiguedad al trabajar con rutas
+
