@@ -1,0 +1,20 @@
+[
+	{
+		"title": "Toalla",
+		"description": "Medidas 0.70x50cm",
+		"price": 45,
+		"thumbnail": "algo",
+		"code": 42,
+		"stock": 9,
+		"id": 1
+	},
+	{
+		"title": "Auricular",
+		"description": "con cable",
+		"price": 15,
+		"thumbnail": "algo",
+		"code": 130,
+		"stock": 35,
+		"id": 2
+	}
+]

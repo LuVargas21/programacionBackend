@@ -69,9 +69,10 @@ class ProductManager {
 		product.code = code;
 		product.stock = stock;
 
-		const newId = this.products.length != 0
-			? this.products[this.products.length - 1].id + 1
-			: 1;
+		const newId =
+			this.products.length != 0
+				? this.products[this.products.length - 1].id + 1
+				: 1;
 		product.id = newId;
 
 		this.products.push(product);
@@ -88,16 +89,20 @@ class ProductManager {
 		}
 	}
 
-	async getProducts() {
+	async getProducts(limit) {
 		await this.loadProducts();
-		return this.products;
+		if (limit) {
+			return this.products.slice(0, limit);
+		} else {
+			return this.products;
+		}
 	}
 
 	async getProductById(id) {
 		await this.loadProducts();
 		const idParam = parseInt(id, 10);
 		const product = this.products.find((product) => product.id === idParam);
-		
+
 		if (product != null) {
 			return product;
 		} else {
