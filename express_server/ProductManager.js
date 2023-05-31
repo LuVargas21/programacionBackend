@@ -1,4 +1,3 @@
-import { error } from "console";
 import fs from "fs";
 
 class Product {
@@ -9,12 +8,11 @@ class ProductManager {
 	constructor(path) {
 		this.path = path;
 		this.products = [];
-		this.loadProducts();
 	}
 
-	loadProducts() {
+	async loadProducts() {
 		try {
-			const jsonProducts = fs.readFileSync(this.path, "utf8");
+			const jsonProducts = await fs.promises.readFile(this.path, "utf8");
 			this.products = JSON.parse(jsonProducts);
 		} catch (error) {
 			throw new Error("Error al cargar los productos");
@@ -32,9 +30,9 @@ class ProductManager {
 			title.trim() === "" ||
 			description.trim() === "" ||
 			thumbnail.trim() === "" ||
-			price.trim() === "" ||
-			code.trim() === "" ||
-			stock.trim() === ""
+			price === "" ||
+			code === "" ||
+			stock === ""
 		) {
 			throw new Error("Debe completar todos los campos");
 		}
@@ -45,7 +43,7 @@ class ProductManager {
 		this.validarCamposVacios(title, description, price, thumbnail, code, stock);
 	}
 
-	addProducts(title, description, price, thumbnail, code, stock) {
+	async addProducts(title, description, price, thumbnail, code, stock) {
 		this.validarCamposVacios(title, description, price, thumbnail, code, stock);
 		this.validarCamposProducto(
 			title,
@@ -71,37 +69,35 @@ class ProductManager {
 		product.code = code;
 		product.stock = stock;
 
-		if (this.products.length != 0) {
-			const newId = this.products.length
-				? this.products[this.products.length - 1].id + 1
-				: 1;
-			// const ids = this.products.map((x) => x.id);
-			// const maxId = Math.max(...ids);
-			product.id = newId + 1;
-		} else {
-			product.id = 1;
-		}
+		const newId = this.products.length != 0
+			? this.products[this.products.length - 1].id + 1
+			: 1;
+		product.id = newId;
 
 		this.products.push(product);
-		this.saveProducts();
+		await this.saveProducts();
 	}
 
-	saveProducts() {
+	async saveProducts() {
 		const jsonProducts = JSON.stringify(this.products, null, "\t");
 		try {
-			fs.writeFileSync(this.path, jsonProducts, "utf-8");
+			await fs.promises.writeFile(this.path, jsonProducts, "utf-8");
 			return "Se guardo de forma exitosa";
 		} catch (error) {
 			throw new Error("Error al guardar");
 		}
 	}
 
-	getProducts() {
+	async getProducts() {
+		await this.loadProducts();
 		return this.products;
 	}
 
-	getProductById(id) {
-		const product = this.products.find((x) => x.id === id);
+	async getProductById(id) {
+		await this.loadProducts();
+		const idParam = parseInt(id, 10);
+		const product = this.products.find((product) => product.id === idParam);
+		
 		if (product != null) {
 			return product;
 		} else {
@@ -109,42 +105,36 @@ class ProductManager {
 		}
 	}
 
-	updateProduct(productId, updateField) {
-		const productUpdate = this.products.find(
+	async updateProduct(productId, updateField) {
+		const productUpdate = this.products.findIndex(
 			(product) => product.id === productId
 		);
 
 		if (productUpdate) {
 			const updateProduct = { ...productUpdate, ...updateField };
-			const indexProduct = this.products.indexOf(productUpdate);
+			const indexProduct = this.products.findIndex(
+				(product) => product.id === productId
+			);
 			this.products[indexProduct] = updateProduct;
-			this.saveProducts();
+			await this.saveProducts();
 			console.log("Producto actualizado");
 		} else {
 			throw new Error("Error al actualizar, verificar!");
 		}
 	}
 
-	deleteProduct(productId) {
+	async deleteProduct(productId) {
 		const productDelete = this.products.findIndex(
 			(product) => product.id === productId
 		);
 		if (productDelete !== -1) {
 			this.products.splice(productDelete, 1);
-			this.saveProducts();
+			await this.saveProducts();
 			return `producto ${productId} eliminado`;
 		} else {
 			return `producto ${productId} no encontrado`;
 		}
 	}
 }
-
-const productManager = new ProductManager("./products.json");
-
-const products = productManager.getProducts();
-
-productManager.updateProduct(1, { code: 89 });
-productManager.deleteProduct(6);
-console.log(products);
 
 export default ProductManager;
