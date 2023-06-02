@@ -1,4 +1,25 @@
 [
-    { 
-    "title": "holaaaa"
-}]
+	{
+		"title": "holaaaa"
+	},
+	{
+		"title": "Auricular",
+		"description": "con cable",
+		"price": 15,
+		"thumbnail": "algo",
+		"code": 130,
+		"stock": 35,
+		"category": "electro",
+		"id": null
+	},
+	{
+		"title": "Auricular",
+		"description": "con cable",
+		"price": 15,
+		"thumbnail": "algo",
+		"code": 190,
+		"stock": 35,
+		"category": "electro",
+		"id": 1
+	}
+]

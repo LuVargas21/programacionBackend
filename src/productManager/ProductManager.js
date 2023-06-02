@@ -1,5 +1,4 @@
 import fs from "fs";
-
 class Product {
 	constructor() {}
 }
@@ -12,48 +11,50 @@ class ProductManager {
 
 	async loadProducts() {
 		try {
-			const jsonProducts = await fs.promises.readFile(this.path, "utf8");
+			const jsonProducts = fs.readFileSync(
+				this.path,
+				"utf8"
+			);
 			this.products = JSON.parse(jsonProducts);
 		} catch (error) {
 			throw new Error("Error al cargar los productos");
 		}
 	}
 
-	validarCamposNulo(title, description, price, thumbnail, code, stock) {
-		if (!title || !description || !price || !thumbnail || !code || !stock) {
+	validarCamposNulo(
+		title,
+		description,
+		price,
+		thumbnail,
+		code,
+		stock,
+		category
+	) {
+		if (
+			!title ||
+			!description ||
+			!price ||
+			!thumbnail ||
+			!code ||
+			!stock ||
+			!category
+		) {
 			throw new Error("Debe completar todos los campos para continuar");
 		}
 	}
 
-	validarCamposVacios(title, description, price, thumbnail, code, stock) {
-		if (
-			title.trim() === "" ||
-			description.trim() === "" ||
-			thumbnail.trim() === "" ||
-			price === "" ||
-			code === "" ||
-			stock === ""
-		) {
-			throw new Error("Debe completar todos los campos");
-		}
-	}
-
-	validarCamposProducto(title, description, price, thumbnail, code, stock) {
-		this.validarCamposNulo(title, description, price, thumbnail, code, stock);
-		this.validarCamposVacios(title, description, price, thumbnail, code, stock);
-	}
-
-	async addProducts(title, description, price, thumbnail, code, stock) {
-		this.validarCamposVacios(title, description, price, thumbnail, code, stock);
-		this.validarCamposProducto(
-			title,
-			description,
-			price,
-			thumbnail,
-			code,
-			stock
-		);
-
+	async addProducts(
+		title,
+		description,
+		price,
+		thumbnail,
+		code,
+		stock,
+		category
+	) {
+		try {
+			await this.loadProducts();
+		console.log("paso23")
 		for (const product of this.products) {
 			if (product.code === code) {
 				console.log("error almacenando producto");
@@ -68,36 +69,53 @@ class ProductManager {
 		product.thumbnail = thumbnail;
 		product.code = code;
 		product.stock = stock;
+		product.category = category;
+		console.log("paso24",)
+		console.log("paso24",product)
 
-		const newId = this.products.length != 0
-			? this.products[this.products.length - 1].id + 1
-			: 1;
+		const newId =
+			this.products.length != 0
+				? this.products[this.products.length - 1].id + 1
+				: 1;
 		product.id = newId;
+		console.log("paso2")
 
 		this.products.push(product);
-		await this.saveProducts();
+		return await this.saveProducts();
+		} catch (error) {
+			console.log(error)
+			throw error
+		}
+		
 	}
 
 	async saveProducts() {
-		const jsonProducts = JSON.stringify(this.products, null, "\t");
 		try {
-			await fs.promises.writeFile(this.path, jsonProducts, "utf-8");
-			return "Se guardo de forma exitosa";
+			const jsonProducts = JSON.stringify(this.products, null, "\t");
+			console.log('jsonProducts',jsonProducts)
+			fs.writeFileSync(this.path, jsonProducts, "utf-8");
+			console.log('this.path',this.path)
+
+			return "Se guardo de forma exitosa4";
 		} catch (error) {
 			throw new Error("Error al guardar");
 		}
 	}
 
-	async getProducts() {
+	async getProducts(limit) {
 		await this.loadProducts();
-		return this.products;
+		if (limit) {
+			return this.products.slice(0, limit);
+		} else {
+			return this.products;
+		}
 	}
 
 	async getProductById(id) {
 		await this.loadProducts();
 		const idParam = parseInt(id, 10);
 		const product = this.products.find((product) => product.id === idParam);
-		
+
 		if (product != null) {
 			return product;
 		} else {

@@ -1,5 +1,8 @@
 [
 	{
+		"title": "holaaaa"
+	},
+	{
 		"title": "Auricular",
 		"description": "con cable",
 		"price": 15,
@@ -7,6 +10,6 @@
 		"code": 130,
 		"stock": 35,
 		"category": "electro",
-		"id": 1
+		"id": null
 	}
 ]
