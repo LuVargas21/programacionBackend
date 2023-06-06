@@ -1,25 +1,54 @@
 [
 	{
-		"title": "holaaaa"
-	},
-	{
-		"title": "Auricular",
-		"description": "con cable",
-		"price": 15,
+		"title": "teclado",
+		"description": "usb",
+		"price": 45,
 		"thumbnail": "algo",
-		"code": 130,
-		"stock": 35,
-		"category": "electro",
-		"id": null
-	},
-	{
-		"title": "Auricular",
-		"description": "con cable",
-		"price": 15,
-		"thumbnail": "algo",
-		"code": 190,
-		"stock": 35,
+		"code": 140,
+		"stock": 5,
 		"category": "electro",
 		"id": 1
+	},
+	{
+		"title": "Auricular",
+		"description": "con put 2",
+		"price": 15,
+		"thumbnail": "algo",
+		"code": 19787,
+		"stock": 35,
+		"category": "electro",
+		"status": true,
+		"id": 2
+	},
+	{
+		"title": "Auricular",
+		"description": "con cable",
+		"price": 15,
+		"thumbnail": "algo",
+		"code": 170,
+		"stock": 35,
+		"category": "electro",
+		"id": 4
+	},
+	{
+		"title": "Auricular",
+		"description": "con cable",
+		"price": 15,
+		"thumbnail": "algo",
+		"code": 1940,
+		"stock": 35,
+		"category": "electro",
+		"id": 5
+	},
+	{
+		"title": "Auriculargh",
+		"description": "con cable",
+		"price": 15,
+		"thumbnail": "algo",
+		"code": 19787,
+		"stock": 35,
+		"category": "electro",
+		"status": true,
+		"id": 6
 	}
 ]
