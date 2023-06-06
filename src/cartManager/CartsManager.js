@@ -1,5 +1,6 @@
 import fs from "fs";
 import ProductManager from "../productManager/ProductManager.js";
+
 class CartManager {
 	constructor(path) {
 		this.path = path;
@@ -8,23 +9,31 @@ class CartManager {
 	}
 
 	async loadCart() {
-		if (fs.existsSync(this.path)) {
-			const jsonCart = await fs.readFileSync(this.path, "utf8");
-			this.carts = JSON.parse(jsonCart);
-		} else {
-			this.carts = [];
+		try {
+			if (fs.existsSync(this.path)) {
+				const jsonCart = await fs.readFileSync(this.path, "utf8");
+				this.carts = JSON.parse(jsonCart);
+			} else {
+				this.carts = [];
+			}
+			const newId =
+				this.carts.length !== 0 ? this.carts[this.carts.length - 1].id + 1 : 1;
+			this.id = newId;
+		} catch (error) {
+			throw new Error("Error al cargar carrito");
 		}
-		const newId =
-			this.carts.length != 0 ? this.carts[this.carts.length - 1].id + 1 : 1;
-		this.carts.id = newId;
 	}
 
 	findCartIndex = (cartId) => {
-		return carts.findIndex((cart) => cart.id === cartId);
+		return this.carts.findIndex((cart) => cart.id === cartId);
 	};
 
 	async saveCart() {
-		await fs.writeFileSync(this.path, JSON.stringify(this.carts));
+		try {
+			fs.writeFileSync(this.path, JSON.stringify(this.carts));
+		} catch (error) {
+			throw new Error("Error al guardar");
+		}
 	}
 
 	async addCart() {
@@ -33,7 +42,7 @@ class CartManager {
 			id: this.id++,
 			products: [],
 		};
-		carts.push(newCart);
+		this.carts.push(newCart);
 		await this.saveCart();
 		return newCart;
 	}
@@ -41,18 +50,18 @@ class CartManager {
 	async getCartByID(cartId) {
 		const existingCartIndex = this.findCartIndex(cartId);
 		if (existingCartIndex !== -1) {
-			return carts[existingCartIndex];
+			return this.carts[existingCartIndex];
 		} else {
-			false;
+			return null;
 		}
 	}
 
 	async addProductToCart(cartId, productId, quantity) {
-		const existingCartIndex = findCartIndex(cartId);
+		const existingCartIndex = this.findCartIndex(cartId);
 		if (existingCartIndex === -1) {
 			return false;
 		}
-		//buscas el producto en productManager
+
 		const product = ProductManager.getProductById(productId);
 		if (!product) {
 			return false;
@@ -64,17 +73,17 @@ class CartManager {
 		);
 
 		if (existingProductIndex !== -1) {
-			// El producto ya está en el carrito, actualiza la cantidad
-			cart.items[existingProductIndex].quantity += quantity;
+			cart.products[existingProductIndex].quantity += quantity;
 		} else {
-			// Agrega el nuevo producto al carrito
 			const newProduct = {
 				id: productId,
 				quantity: quantity,
 			};
-			carts.products.push(newProduct);
+			cart.products.push(newProduct);
 		}
+
 		await this.saveCart();
 	}
 }
+
 export default CartManager;
