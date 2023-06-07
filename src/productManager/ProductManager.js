@@ -1,11 +1,11 @@
 import fs from "fs";
 import Product from "./Product.js";
 
-
 class ProductManager {
 	constructor(path) {
 		this.path = path;
 		this.products = [];
+		this.loadProducts();
 	}
 
 	async loadProducts() {
@@ -50,7 +50,6 @@ class ProductManager {
 		status
 	) {
 		try {
-			await this.loadProducts();
 			console.log("paso23");
 			for (const product of this.products) {
 				if (product.code === code) {
@@ -100,7 +99,6 @@ class ProductManager {
 	}
 
 	async getProducts(limit) {
-		await this.loadProducts();
 		if (limit) {
 			return this.products.slice(0, limit);
 		} else {
@@ -109,7 +107,6 @@ class ProductManager {
 	}
 
 	async getProductById(id) {
-		await this.loadProducts();
 		const idParam = parseInt(id, 10);
 		return this.products.find((product) => product.id === idParam);
 	}
@@ -133,7 +130,6 @@ class ProductManager {
 	}
 
 	async updateProduct(productToUpdate) {
-		await this.loadProducts();
 		const productIndex = this.products.findIndex(
 			(p) => p.id === productToUpdate.id
 		);
@@ -149,11 +145,8 @@ class ProductManager {
 	}
 
 	async deleteProduct(productId) {
-		await this.loadProducts();
 		const idParam = parseInt(productId, 10);
-		const productIndex = this.products.findIndex(
-			(p) => p.id === idParam
-		);
+		const productIndex = this.products.findIndex((p) => p.id === idParam);
 		if (productIndex !== -1) {
 			this.products.splice(productIndex, 1);
 			await this.saveProducts();

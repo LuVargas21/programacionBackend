@@ -6,6 +6,7 @@ class CartManager {
 		this.path = path;
 		this.carts = [];
 		this.id = 0;
+		this.loadCart();
 	}
 
 	async loadCart() {
@@ -61,8 +62,8 @@ class CartManager {
 		if (existingCartIndex === -1) {
 			return false;
 		}
-
-		const product = ProductManager.getProductById(productId);
+		const productManager = new ProductManager("./src/productManager/products.json");
+		const product = await productManager.getProductById(productId);
 		if (!product) {
 			return false;
 		}

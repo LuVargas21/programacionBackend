@@ -1,5 +1,7 @@
 class Product {
-	constructor() {}
+	constructor() {
+		this.status = true;
+	}
 }
 
 export default Product;

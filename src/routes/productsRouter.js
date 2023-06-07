@@ -4,9 +4,7 @@ import Product from "../productManager/Product.js";
 
 const router = Router();
 
-const productManager = new ProductManager(
-	"C:\\Users\\Luciana\\Documents\\GitHub\\programacionBackend\\src\\productManager\\products.json"
-);
+const productManager = new ProductManager("./src/productManager/products.json");
 
 router.get("/", async (req, res) => {
 	try {
@@ -36,8 +34,16 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
 	try {
-		const { title, description, price, thumbnail, code, stock, category, status} =
-			req.body;
+		const {
+			title,
+			description,
+			price,
+			thumbnail,
+			code,
+			stock,
+			category,
+			status,
+		} = req.body;
 		const resp = await productManager.addProducts(
 			title,
 			description,
@@ -45,9 +51,8 @@ router.post("/", async (req, res) => {
 			thumbnail,
 			code,
 			stock,
-			category, 
+			category,
 			status
-		
 		);
 		console.log("paso");
 		res.status(201).send(resp);
@@ -59,8 +64,16 @@ router.post("/", async (req, res) => {
 
 router.put("/", async (req, res) => {
 	try {
-		const { title, description, price, thumbnail, code, stock, category, status, id} =
-			req.body;
+		const {
+			title,
+			description,
+			price,
+			thumbnail,
+			code,
+			stock,
+			category,
+			id,
+		} = req.body;
 		const product = new Product();
 		product.title = title;
 		product.description = description;
@@ -69,16 +82,14 @@ router.put("/", async (req, res) => {
 		product.code = code;
 		product.stock = stock;
 		product.category = category;
-		product.status = status;
 		product.id = id;
-			
+
 		const productUpdated = await productManager.updateProduct(product);
 		if (!productUpdated) {
 			res.status(404).send("Producto no encontrado");
 		} else {
 			res.json(productUpdated);
 		}
-
 	} catch (error) {
 		console.log(error, "error en el servidor");
 		res.status(500).send("error al intentar modificar el producto");
