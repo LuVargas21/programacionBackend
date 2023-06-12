@@ -1,0 +1,28 @@
+// permite acceder a una web de forma dinamica en tiempo real
+//el cliente establece una conexion con el servidor que se establece por handshake
+// el cliente envia al servidor todos los datos de identificacion necesarios para el intercambio de info
+
+// diferencias con HTTP
+//**HTTP ---> Son peticiones al servidor que esperan una respuesta
+/* se solicita info y se espera respuesta
+/* se usa para consumir apis y rec web 
+/* protocolo http
+/* conexion de una sola via 
+/* no sustituye a websockets 
+/** WEBSOCKETS ---> Es un canal abierto ente cliente y servidor. 
+/* se usa comunic en tiempo real 
+/* se usa para escuchar info en tiempo real 
+/* es un protocolo de comunicacion 
+/* conexion de doble via 
+/* no sustituye a http*/
+
+// websockets y http se complementan, no es que uno reemplaza al otro.
+
+// BIBLIOTECA SOCKET.IO - caractertisticas:
+
+//se puede usar como un contenedor para websockets para proporciona muchas mas funciones incluida la transmision a multiples sockets, el almacenamiento de datos asociados con cada cliente y E/S asincronicas. Se puede instalar con npm
+//fiabilidad las conexiones se stablece incluso en presencia de proxy o balanceador de carga y firewall o antivirus.
+//soporte de reconexion automatica a menos que se indique otra cosa.
+//deteccion de desconexion - soporte binario  ArrayBuffer y Blob en el navegador  y ArrayBuffer y Buffer en Node.js
+
+//COMANDO!!! npm install express express-handlebars socket.io
